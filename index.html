@@ -116,6 +116,16 @@
       code {
         border-bottom: 1px dotted #ccc;
       }
+      .sticky {
+          position: -webkit-sticky;
+          position: sticky;
+          top: 0;
+      }
+      .sticky:before,
+      .sticky:after {
+          content: '';
+          display: table;
+      }
     </style>
   </head>
   <body>
@@ -128,84 +138,84 @@
         <div class="form-group">
           <label>
             Background Color
-            <input type="text" v-model="backgroundColor">
+            <input type="text" v-model="form.backgroundColor">
           </label>
         </div>
         <div class="form-group">
           <label>
             Font Size
           </label>
-          <input type="text" v-model="fontSize">
+          <input type="text" v-model="form.fontSize">
         </div>
         <div class="form-group">
           <label>
             Font Color
           </label>
-          <input type="text" v-model="fontColor">
+          <input type="text" v-model="form.fontColor">
         </div>
         <div class="form-group">
           <label>
             Font Family
           </label>
-          <input type="text" v-model="fontFamily">
+          <input type="text" v-model="form.fontFamily">
         </div>
         <div class="form-group">
           <label>
             Border Width
           </label>
-          <input type="text" v-model="borderWidth">
+          <input type="text" v-model="form.borderWidth">
         </div>
         <div class="form-group">
           <label>
             Border Color
           </label>
-          <input type="text" v-model="borderColor">
+          <input type="text" v-model="form.borderColor">
         </div>
         <div class="form-group">
           <label>
             Canvas Height
           </label>
-          <input type="text" v-model="height">
+          <input type="text" v-model="form.height">
         </div>
         <div class="form-group">
           <label>
             Canvas Width
           </label>
-          <input type="text" v-model="width">
+          <input type="text" v-model="form.width">
         </div>
         <div class="form-group">
           <label>
             Box Height
           </label>
-          <input type="text" v-model="boxHeight">
+          <input type="text" v-model="form.boxHeight">
         </div>
         <div class="form-group">
           <label>
             Box Width
           </label>
-          <input type="text" v-model="boxWidth">
+          <input type="text" v-model="form.boxWidth">
         </div>
         <div class="form-group">
           <label>
             Text Offset Left
           </label>
-          <input type="text" v-model="offsetLeft" number>
+          <input type="text" v-model="form.offsetLeft" number>
         </div>
         <div class="form-group">
           <label>
             Text Offset Top
           </label>
-          <input type="text" v-model="offsetTop" number>
+          <input type="text" v-model="form.offsetTop" number>
         </div>
         <div class="form-group">
           <label>
             Text
           </label>
-          <textarea v-model="text" rows="5"></textarea>
+          <textarea v-model="form.text" rows="5"></textarea>
         </div>
-        <button @click="handleChange">Render</button>
+        <button @click="handleReset">Reset data</button>
       </div>
-      <div class="result">
+      <div class="result sticky">
         <div class="draw">
           <div id="canvas">Loading...</div>
         </div>
@@ -216,12 +226,11 @@
         </div>
       </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.12/vue.min.js"></script>
+    <script src="https://cdn.css.net/libs/vue/1.0.10/vue.min.js"></script>
+    <script src="https://cdn.css.net/libs/stickyfill/1.1.3/stickyfill.min.js"></script>
     <script>
       var $ = document.querySelector.bind(document);
-      new Vue({
-        el: '#app',
-        data: {
+      var defaultData = {
           backgroundColor: 'yellow',
           fontSize: '24',
           fontColor: 'black',
@@ -239,14 +248,27 @@
           width: 'auto',
           boxHeight: 100,
           boxWidth: 100
+        };
+      var vm = new Vue({
+        el: '#app',
+        data: function () {
+          return {
+            form: JSON.parse(JSON.stringify(defaultData))
+          };
         },
         ready: function () {
           this.fill();
         },
         methods: {
+          stickyCanvas: function () {
+             Stickyfill.add(document.getElementsByClassName('result')[0]);
+          },
           handleChange: function () {
             this.fill();
-            scrollTo(0, 0);
+          },
+          handleReset: function () {
+            this.form = JSON.parse(JSON.stringify(defaultData));
+            this.fill();
           },
           fill: function () {
             //Initial or Reinitial canvas element
@@ -256,30 +278,35 @@
             }
             var canvas = document.createElement('canvas');
             canvas.id = 'canvas';
-            canvas.setAttribute('height', this.height);
-            canvas.setAttribute('width', this.width);
+            canvas.setAttribute('height', this.form.height);
+            canvas.setAttribute('width', this.form.width);
             $('.draw').appendChild(canvas);
             // draw canvas
             var context = canvas.getContext('2d');
-            context.clearRect(1, 1, this.boxWidth, this.boxHeight);
+            context.clearRect(1, 1, this.form.boxWidth, this.form.boxHeight);
             // background
-            context.fillStyle = this.backgroundColor;
-            context.fillRect(1, 1, this.boxWidth, this.boxHeight);
-            context.font = this.fontSize + 'px ' + this.fontFamily;
+            context.fillStyle = this.form.backgroundColor;
+            context.fillRect(1, 1, this.form.boxWidth, this.form.boxHeight);
+            context.font = this.form.fontSize + 'px ' + this.form.fontFamily;
             // border
-            context.strokeStyle = this.borderColor;
-            context.lineWidth = this.borderWidth;
-            context.strokeRect(1, 1 , this.boxWidth, this.boxHeight);
+            context.strokeStyle = this.form.borderColor;
+            context.lineWidth = this.form.borderWidth;
+            context.strokeRect(1, 1 , this.form.boxWidth, this.form.boxHeight);
             // text
-            context.fillStyle = this.fontColor;
-            var text = this.text.split('\n')
+            context.fillStyle = this.form.fontColor;
+            var text = this.form.text.split('\n')
             text.forEach(function (t, index) {
-              context.fillText(t, this.offsetLeft, this.offsetTop + index * 30);
+              context.fillText(t, this.form.offsetLeft, this.form.offsetTop + index * 30);
             }.bind(this));
             context.fill();
+            // sticky canvas when scrolling
+            this.stickyCanvas();
           }
         }
-      })
+      });
+      vm.$watch('form', function (newVal, oldVal) {
+          this.handleChange();
+      }, {deep: true})
     </script>
   </body>
 </html>
