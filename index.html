@@ -241,7 +241,7 @@
             context.fillStyle = this.fontColor;
             var text = this.text.split('\n')
             text.forEach(function (t, index) {
-              context.fillText(t, this.offsetLeft, 28 + index * 30);
+              context.fillText(t, this.offsetLeft, 30 + index * 30);
             }.bind(this));
             context.fill();
           }
