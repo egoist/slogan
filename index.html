@@ -163,15 +163,27 @@
         </div>
         <div class="form-group">
           <label>
-            Height
+            Canvas Height
           </label>
           <input type="text" v-model="height">
         </div>
         <div class="form-group">
           <label>
-            Width
+            Canvas Width
           </label>
           <input type="text" v-model="width">
+        </div>
+        <div class="form-group">
+          <label>
+            Box Height
+          </label>
+          <input type="text" v-model="boxHeight">
+        </div>
+        <div class="form-group">
+          <label>
+            Box Width
+          </label>
+          <input type="text" v-model="boxWidth">
         </div>
         <div class="form-group">
           <label>
@@ -224,7 +236,9 @@
           offsetLeft: 10,
           offsetTop: 30,
           height: 102,
-          width: 'auto'
+          width: 'auto',
+          boxHeight: 100,
+          boxWidth: 100
         },
         ready: function () {
           this.fill();
@@ -247,15 +261,15 @@
             $('.draw').appendChild(canvas);
             // draw canvas
             var context = canvas.getContext('2d');
-            context.clearRect(1,1,100,100);
+            context.clearRect(1, 1, this.boxWidth, this.boxHeight);
             // background
             context.fillStyle = this.backgroundColor;
-            context.fillRect(1,1,100,100);
+            context.fillRect(1, 1, this.boxWidth, this.boxHeight);
             context.font = this.fontSize + 'px ' + this.fontFamily;
             // border
             context.strokeStyle = this.borderColor;
             context.lineWidth = this.borderWidth;
-            context.strokeRect(1, 1 ,100,100);
+            context.strokeRect(1, 1 , this.boxWidth, this.boxHeight);
             // text
             context.fillStyle = this.fontColor;
             var text = this.text.split('\n')
