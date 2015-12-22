@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Slogan</title>
+    <style>
+      * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font: 14px/1.4 Helvetica, arial, serif;
+      }
+      #app {
+        max-width: 700px;
+        margin: 0 auto;
+        padding-top: 40px;
+      }
+      h1 {
+        margin-bottom: 60px;
+      }
+      .form, .result {
+        width: 50%;
+        float: left;
+      }
+      .result {
+        padding-left: 20px;
+      }
+      .form-group label {
+        font-weight: bold;
+      }
+      .form-group input, .form-group textarea  {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+        height: 30px;
+        line-height: 30px;
+        padding: 0 10px;
+        outline: none;
+        border: 1px solid #e2e2e2;
+        border-radius: 2px;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+      }
+      .form-group input:focus, .form-group textarea:focus {
+        border-color: #1385e5;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 3px rgba(19, 133, 229, 0.1);
+      }
+      .form-group textarea {
+        height: auto;
+        line-height: 1.4;
+        padding: 10px;
+      }
+      .form button {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background: none;
+        border: 1px solid transparent;
+        border-radius: 0.3em;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: 500;
+        line-height: 2.3em;
+        height: 2.4em;
+        margin-bottom: 0;
+        overflow: hidden;
+        padding: 0 1em;
+        text-align: center;
+        touch-action: manipulation;
+        vertical-align: middle;
+        white-space: nowrap;
+        -webkit-appearance: none;
+        background-image: -webkit-linear-gradient(top, #fafafa 0%, #eaeaea 100%);
+        background-image: -o-linear-gradient(top, #fafafa 0%, #eaeaea 100%);
+        background-image: linear-gradient(to bottom, #fafafa 0%, #eaeaea 100%);
+        background-repeat: repeat-x;
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffafafa', endColorstr='#ffeaeaea', GradientType=0);
+        border: 1px solid #ccc;
+        border-color: #ccc #bdbdbd #adadad;
+        color: #333;
+        text-shadow: 0 1px 0 white;
+        outline: none;
+      }
+      .form button:hover {
+        background-image: -webkit-linear-gradient(top, #fff 0%, #eee 100%);
+        background-image: -o-linear-gradient(top, #fff 0%, #eee 100%);
+        background-image: linear-gradient(to bottom, #fff 0%, #eee 100%);
+        background-repeat: repeat-x;
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffeeeeee', GradientType=0);
+        border-color: #bfbfbf #bfbfbf #b3b3b3;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+      }
+      .tips {
+        padding-left: 20px;
+        color: #999;
+      }
+      code {
+        border-bottom: 1px dotted #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Slogan: generate logo for open-source projects</h1>
+      <div class="form">
+        <div class="form-group">
+          <label>
+            Background Color
+            <input type="text" v-model="backgroundColor">
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            Font Size
+          </label>
+          <input type="text" v-model="fontSize">
+        </div>
+        <div class="form-group">
+          <label>
+            Font Color
+          </label>
+          <input type="text" v-model="fontColor">
+        </div>
+        <div class="form-group">
+          <label>
+            Font Family
+          </label>
+          <input type="text" v-model="fontFamily">
+        </div>
+        <div class="form-group">
+          <label>
+            Border Width
+          </label>
+          <input type="text" v-model="borderWidth">
+        </div>
+        <div class="form-group">
+          <label>
+            Border Color
+          </label>
+          <input type="text" v-model="borderColor">
+        </div>
+        <div class="form-group">
+          <label>
+            Text Offset Left
+          </label>
+          <input type="text" v-model="offsetLeft">
+        </div>
+        <div class="form-group">
+          <label>
+            Text
+          </label>
+          <textarea v-model="text" rows="5"></textarea>
+        </div>
+        <button @click="handleChange">Render</button>
+      </div>
+      <div class="result">
+        <div class="draw"></div>
+        <div class="tips">
+          <div class="tip">
+            *Tip: Right click on the image above then click <br><code>Save as</code> to save.
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="http://cdn.css.net/libs/vue/1.0.10/vue.min.js"></script>
+    <script>
+      var $ = document.querySelector.bind(document);
+      new Vue({
+        el: '#app',
+        data: {
+          backgroundColor: 'yellow',
+          fontSize: '24',
+          fontColor: 'black',
+          fontFamily: 'Arial',
+          borderColor: 'black',
+          borderWidth: '2',
+          text: [
+            'CSS',
+            'IS',
+            'AWESOME'
+          ].join('\n'),
+          offsetLeft: 30
+        },
+        ready: function () {
+          this.fill();
+        },
+        methods: {
+          handleChange: function () {
+            this.fill();
+          },
+          fill: function () {
+            //Initial or Reinitial canvas element
+            var existing = $('#canvas');
+            if (existing) {
+              existing.parentNode.removeChild(existing);
+            }
+            var canvas = document.createElement('canvas');
+            canvas.id = 'canvas';
+            $('.draw').appendChild(canvas);
+            // draw canvas
+            var context = canvas.getContext('2d');
+            context.clearRect(25,25,100,200);
+            // background
+            context.fillStyle = this.backgroundColor;
+            context.fillRect(25,25,100,100);
+            context.font = this.fontSize + 'px ' + this.fontFamily;
+
+            // border
+            context.strokeStyle = this.borderColor;
+            context.lineWidth = this.borderWidth;
+            context.strokeRect(25, 25 ,100,100);
+
+            // text
+            context.fillStyle = this.fontColor;
+            var text = this.text.split('\n')
+            text.forEach(function (t, index) {
+              context.fillText(t, this.offsetLeft, 55 + index * 30);
+            }.bind(this));
+            context.fill();
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
