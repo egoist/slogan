@@ -177,7 +177,13 @@
           <label>
             Text Offset Left
           </label>
-          <input type="text" v-model="offsetLeft">
+          <input type="text" v-model="offsetLeft" number>
+        </div>
+        <div class="form-group">
+          <label>
+            Text Offset Top
+          </label>
+          <input type="text" v-model="offsetTop" number>
         </div>
         <div class="form-group">
           <label>
@@ -216,6 +222,7 @@
             'AWESOME'
           ].join('\n'),
           offsetLeft: 10,
+          offsetTop: 30,
           height: 102,
           width: 'auto'
         },
@@ -253,7 +260,7 @@
             context.fillStyle = this.fontColor;
             var text = this.text.split('\n')
             text.forEach(function (t, index) {
-              context.fillText(t, this.offsetLeft, 30 + index * 30);
+              context.fillText(t, this.offsetLeft, this.offsetTop + index * 30);
             }.bind(this));
             context.fill();
           }
