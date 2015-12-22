@@ -166,7 +166,7 @@
         </div>
       </div>
     </div>
-    <script src="http://cdn.css.net/libs/vue/1.0.10/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.12/vue.min.js"></script>
     <script>
       var $ = document.querySelector.bind(document);
       new Vue({
@@ -208,12 +208,10 @@
             context.fillStyle = this.backgroundColor;
             context.fillRect(25,25,100,100);
             context.font = this.fontSize + 'px ' + this.fontFamily;
-
             // border
             context.strokeStyle = this.borderColor;
             context.lineWidth = this.borderWidth;
             context.strokeRect(25, 25 ,100,100);
-
             // text
             context.fillStyle = this.fontColor;
             var text = this.text.split('\n')
