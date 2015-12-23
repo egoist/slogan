@@ -145,7 +145,7 @@
           <label>
             Font Size
           </label>
-          <input type="text" v-model="form.fontSize">
+          <input type="text" v-model="form.fontSize" number>
         </div>
         <div class="form-group">
           <label>
@@ -163,7 +163,7 @@
           <label>
             Border Width
           </label>
-          <input type="text" v-model="form.borderWidth">
+          <input type="text" v-model="form.borderWidth" number>
         </div>
         <div class="form-group">
           <label>
@@ -175,25 +175,25 @@
           <label>
             Canvas Height
           </label>
-          <input type="text" v-model="form.height">
+          <input type="text" v-model="form.height" number>
         </div>
         <div class="form-group">
           <label>
             Canvas Width
           </label>
-          <input type="text" v-model="form.width">
+          <input type="text" v-model="form.width" number>
         </div>
         <div class="form-group">
           <label>
             Box Height
           </label>
-          <input type="text" v-model="form.boxHeight">
+          <input type="text" v-model="form.boxHeight" number>
         </div>
         <div class="form-group">
           <label>
             Box Width
           </label>
-          <input type="text" v-model="form.boxWidth">
+          <input type="text" v-model="form.boxWidth" number>
         </div>
         <div class="form-group">
           <label>
@@ -232,11 +232,11 @@
       var $ = document.querySelector.bind(document);
       var defaultData = {
           backgroundColor: 'yellow',
-          fontSize: '24',
+          fontSize: 24,
           fontColor: 'black',
           fontFamily: 'Arial',
           borderColor: 'black',
-          borderWidth: '2',
+          borderWidth: 2,
           text: [
             'CSS',
             'IS',
@@ -289,9 +289,11 @@
             context.fillRect(1, 1, this.form.boxWidth, this.form.boxHeight);
             context.font = this.form.fontSize + 'px ' + this.form.fontFamily;
             // border
-            context.strokeStyle = this.form.borderColor;
-            context.lineWidth = this.form.borderWidth;
-            context.strokeRect(1, 1 , this.form.boxWidth, this.form.boxHeight);
+            if (this.form.borderWidth > 0) {
+              context.strokeStyle = this.form.borderColor;
+              context.lineWidth = this.form.borderWidth;
+              context.strokeRect(1, 1, this.form.boxWidth, this.form.boxHeight);
+            }
             // text
             context.fillStyle = this.form.fontColor;
             var text = this.form.text.split('\n')
