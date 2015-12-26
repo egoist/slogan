@@ -74,6 +74,14 @@
         box-shadow: none;
         background-color: #fff;
       }
+      .form-group .option-wrapper label,
+      .form-group .option-wrapper input {
+        font-weight: normal;
+      }
+      .form-group .option-wrapper label:first-child {
+        display: block;
+        margin-top: 10px;
+      }
       .form button {
         -webkit-user-select: none;
         -moz-user-select: none;
@@ -176,6 +184,27 @@
         </div>
         <div class="form-group">
           <label>
+            Font Shadow
+          </label>
+          <div class="option-wrapper">
+            <label>Shadow Color</label>
+            <input type="text" v-model="form.fontShadow.color">
+          </div>
+          <div class="option-wrapper">
+            <label>Shadow Offset X</label>
+            <input type="text" v-model="form.fontShadow.offsetX">
+          </div>
+          <div class="option-wrapper">
+            <label>Shadow Offset Y</label>
+            <input type="text" v-model="form.fontShadow.offsetY">
+          </div>
+          <div class="option-wrapper">
+            <label>Shadow Blur</label>
+            <input type="text" v-model="form.fontShadow.blur">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>
             Border Width
           </label>
           <input type="text" v-model="form.borderWidth" number>
@@ -251,6 +280,12 @@
           fontColor: 'black',
           fontFamily: 'Arial',
           fontStyle: 'fill',
+          fontShadow: {
+            color: '#999',
+            offsetX: 5,
+            offsetY: 5,
+            blur: 6
+          },
           borderColor: 'black',
           borderWidth: 2,
           text: [
@@ -287,6 +322,7 @@
             this.fill();
           },
           fill: function () {
+
             //Initial or Reinitial canvas element
             var existing = $('#canvas');
             if (existing) {
@@ -297,21 +333,33 @@
             canvas.setAttribute('height', this.form.height);
             canvas.setAttribute('width', this.form.width);
             $('.draw').appendChild(canvas);
+
             // draw canvas
             var context = canvas.getContext('2d');
             context.clearRect(1, 1, this.form.boxWidth, this.form.boxHeight);
+
             // background
             context.fillStyle = this.form.backgroundColor;
             context.fillRect(1, 1, this.form.boxWidth, this.form.boxHeight);
-            context.font = this.form.fontSize + 'px ' + this.form.fontFamily;
+
             // border
             if (this.form.borderWidth > 0) {
               context.strokeStyle = this.form.borderColor;
               context.lineWidth = this.form.borderWidth;
               context.strokeRect(1, 1, this.form.boxWidth, this.form.boxHeight);
             }
+
             // text
+            context.font = this.form.fontSize + 'px ' + this.form.fontFamily;
             context.fillStyle = this.form.fontColor;
+
+            if (this.form.fontShadow) {
+              context.shadowColor = this.form.fontShadow.color;
+              context.shadowOffsetX = this.form.fontShadow.offsetX;
+              context.shadowOffsetY = this.form.fontShadow.offsetY;
+              context.shadowBlur = this.form.fontShadow.blur;
+            }
+
             var text = this.form.text.split('\n');
             var drawText = (this.form.fontStyle === 'stroke') ? 'strokeText' : 'fillText';
             text.forEach(function (t, index) {
