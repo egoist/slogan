@@ -47,7 +47,9 @@
       .form-group label {
         font-weight: bold;
       }
-      .form-group input, .form-group textarea  {
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
         display: block;
         width: 100%;
         margin: 10px 0;
@@ -68,10 +70,9 @@
         line-height: 1.4;
         padding: 10px;
       }
-      .form-group .options {
-        color: #999;
-        margin-left: 10px;
-        font-weight: lighter;
+      .form-group select {
+        box-shadow: none;
+        background-color: #fff;
       }
       .form button {
         -webkit-user-select: none;
@@ -166,9 +167,12 @@
         </div>
         <div class="form-group">
           <label>
-            Font Style <span class="options">fill OR stroke</span>
+            Font Style
           </label>
-          <input type="text" v-model="form.fontStyle">
+          <select v-model="form.fontStyle">
+            <option selected>fill</option>
+            <option>stroke</option>
+          </select>
         </div>
         <div class="form-group">
           <label>
