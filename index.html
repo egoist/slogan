@@ -15,7 +15,7 @@
         background-color: #fdfdfd;
       }
       #app {
-        max-width: 750px;
+        max-width: 800px;
         margin: 0 auto;
         padding: 20px 40px;
         background: #fafafa;
@@ -23,7 +23,7 @@
         border-radius: 3px 3px 0 0;
       }
       .header {
-        max-width: 750px;
+        max-width: 800px;
         margin: 40px auto;
       }
       .clearfix:after {
@@ -141,6 +141,17 @@
           content: '';
           display: table;
       }
+      .form-group-inline:after {
+        content: '';
+        clear: both;
+        display: block;
+        height: 0;
+        visibility: hidden;
+      }
+      .form-group-inline .option-wrapper {
+        float: left;
+        width: 25%;
+      }
     </style>
   </head>
   <body>
@@ -187,21 +198,23 @@
           <label>
             Font Shadow
           </label>
-          <div class="option-wrapper">
-            <label>Shadow Color</label>
-            <input type="text" v-model="form.fontShadow.color">
-          </div>
-          <div class="option-wrapper">
-            <label>Shadow Offset X</label>
-            <input type="text" v-model="form.fontShadow.offsetX">
-          </div>
-          <div class="option-wrapper">
-            <label>Shadow Offset Y</label>
-            <input type="text" v-model="form.fontShadow.offsetY">
-          </div>
-          <div class="option-wrapper">
-            <label>Shadow Blur</label>
-            <input type="text" v-model="form.fontShadow.blur">
+          <div class="form-group-inline">
+            <div class="option-wrapper">
+              <label>Color</label>
+              <input type="text" v-model="form.fontShadow.color">
+            </div>
+            <div class="option-wrapper">
+              <label>Offset X</label>
+              <input type="text" v-model="form.fontShadow.offsetX">
+            </div>
+            <div class="option-wrapper">
+              <label>Offset Y</label>
+              <input type="text" v-model="form.fontShadow.offsetY">
+            </div>
+            <div class="option-wrapper">
+              <label>Blur</label>
+              <input type="text" v-model="form.fontShadow.blur">
+            </div>
           </div>
         </div>
         <div class="form-group">
@@ -282,7 +295,7 @@
           fontFamily: 'Arial',
           fontStyle: 'fill',
           fontShadow: {
-            color: '#999',
+            color: '#fff',
             offsetX: 5,
             offsetY: 5,
             blur: 6
