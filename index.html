@@ -68,6 +68,11 @@
         line-height: 1.4;
         padding: 10px;
       }
+      .form-group .options {
+        color: #999;
+        margin-left: 10px;
+        font-weight: lighter;
+      }
       .form button {
         -webkit-user-select: none;
         -moz-user-select: none;
@@ -161,6 +166,12 @@
         </div>
         <div class="form-group">
           <label>
+            Font Style <span class="options">fill OR stroke</span>
+          </label>
+          <input type="text" v-model="form.fontStyle">
+        </div>
+        <div class="form-group">
+          <label>
             Border Width
           </label>
           <input type="text" v-model="form.borderWidth" number>
@@ -235,6 +246,7 @@
           fontSize: 24,
           fontColor: 'black',
           fontFamily: 'Arial',
+          fontStyle: 'fill',
           borderColor: 'black',
           borderWidth: 2,
           text: [
@@ -296,9 +308,10 @@
             }
             // text
             context.fillStyle = this.form.fontColor;
-            var text = this.form.text.split('\n')
+            var text = this.form.text.split('\n');
+            var drawText = (this.form.fontStyle === 'stroke') ? 'strokeText' : 'fillText';
             text.forEach(function (t, index) {
-              context.fillText(t, this.form.offsetLeft, this.form.offsetTop + index * 30);
+              context[drawText](t, this.form.offsetLeft, this.form.offsetTop + index * 30);
             }.bind(this));
             context.fill();
             // sticky canvas when scrolling
