@@ -296,9 +296,9 @@
           fontStyle: 'fill',
           fontShadow: {
             color: '#fff',
-            offsetX: 5,
-            offsetY: 5,
-            blur: 6
+            offsetX: 0,
+            offsetY: 0,
+            blur: 0
           },
           borderColor: 'black',
           borderWidth: 2,
@@ -310,7 +310,7 @@
           offsetLeft: 10,
           offsetTop: 30,
           height: 102,
-          width: 'auto',
+          width: 150,
           boxHeight: 100,
           boxWidth: 100
         };
@@ -344,8 +344,11 @@
             }
             var canvas = document.createElement('canvas');
             canvas.id = 'canvas';
-            canvas.setAttribute('height', this.form.height);
-            canvas.setAttribute('width', this.form.width);
+            canvas.style.height = this.form.height + 'px';
+            canvas.style.width = this.form.width + 'px';
+            canvas.height = 2 * this.form.height;
+            canvas.width = 2 * this.form.width;
+            canvas.getContext('2d').scale(2,2);
             $('.draw').appendChild(canvas);
 
             // draw canvas
