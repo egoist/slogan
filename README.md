@@ -1,8 +1,13 @@
 # slogan
 
-![wow](http://ww4.sinaimg.cn/large/a15b4afegw1ez8p0s2ig9j208c02uweg)
+<img src="./logo.png" width="100"/>
 
 Slogan: generate logo for open-source projects ♨️ 👉 https://egoist.github.io/slogan
+
+## Who's using this?
+
+- [vuepack](https://github.com/egoist/vuepack)
+- [eva.js](https://github.com/egoist/eva.js)
 
 ## License
 
