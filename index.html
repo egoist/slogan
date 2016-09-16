@@ -186,6 +186,9 @@
               <option value="green" :selected="'green' === colorScheme">
                 Green
               </option>
+              <option value="red" :selected="'red' === colorScheme">
+                Red
+              </option>
             </select>
           </div>
           <div class="form-group">
@@ -439,6 +442,10 @@
               this.form.borderColor = defaultData.form.borderColor;
               this.form.fontColor = defaultData.form.fontColor;
               this.form.backgroundColor = defaultData.form.backgroundColor;
+            } else if (this.colorScheme === 'red') {
+              this.form.borderColor = '#ff7171';
+              this.form.fontColor = '#2c3e50';
+              this.form.backgroundColor = 'white';
             }
           },
           download: function () {
