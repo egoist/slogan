@@ -407,7 +407,7 @@
             if (this.form.borderWidth > 0) {
               context.strokeStyle = this.form.borderColor;
               context.lineWidth = this.form.borderWidth;
-              context.strokeRect(1, 1, this.form.boxWidth, this.form.boxHeight);
+              context.strokeRect(this.form.borderWidth / 2, this.form.borderWidth / 2, this.form.boxWidth, this.form.boxHeight);
             }
 
             // text
