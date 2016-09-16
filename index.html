@@ -15,12 +15,14 @@
         background-color: #fdfdfd;
       }
       #app {
-        max-width: 800px;
         margin: 0 auto;
         padding: 20px 40px;
         background: #fafafa;
-        border: 1px solid #dedede;
-        border-radius: 3px 3px 0 0;
+        border-top: 1px solid #f0f0f0;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
       }
       .header {
         max-width: 800px;
@@ -36,6 +38,7 @@
       h1 {
         margin: 0;
         font-weight: 400;
+        font-family: 'Marker Felt', Impact, Helvetica, sans-serif;
       }
       .form, .result {
         width: 50%;
@@ -47,6 +50,7 @@
       }
       .form-group label {
         font-weight: bold;
+        font-family: 'Marker Felt', Impact, Helvetica, sans-serif;
       }
       .form-group input,
       .form-group textarea,
@@ -59,8 +63,7 @@
         padding: 0 10px;
         outline: none;
         border: 1px solid #e2e2e2;
-        border-radius: 2px;
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        border-radius: 4px;
       }
       .form-group input:focus, .form-group textarea:focus {
         border-color: #1385e5;
@@ -83,7 +86,7 @@
         display: block;
         margin-top: 10px;
       }
-      .form button {
+      button {
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
@@ -103,24 +106,15 @@
         touch-action: manipulation;
         vertical-align: middle;
         white-space: nowrap;
-        -webkit-appearance: none;
-        background-image: -webkit-linear-gradient(top, #fafafa 0%, #eaeaea 100%);
-        background-image: -o-linear-gradient(top, #fafafa 0%, #eaeaea 100%);
-        background-image: linear-gradient(to bottom, #fafafa 0%, #eaeaea 100%);
-        background-repeat: repeat-x;
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffafafa', endColorstr='#ffeaeaea', GradientType=0);
         border: 1px solid #ccc;
         border-color: #ccc #bdbdbd #adadad;
         color: #333;
         text-shadow: 0 1px 0 white;
         outline: none;
+        width: 100%;
+        font-size: 1.4rem;
       }
-      .form button:hover {
-        background-image: -webkit-linear-gradient(top, #fff 0%, #eee 100%);
-        background-image: -o-linear-gradient(top, #fff 0%, #eee 100%);
-        background-image: linear-gradient(to bottom, #fff 0%, #eee 100%);
-        background-repeat: repeat-x;
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffeeeeee', GradientType=0);
+      button:hover {
         border-color: #bfbfbf #bfbfbf #b3b3b3;
         box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
       }
@@ -151,7 +145,26 @@
       .form-group-inline .option-wrapper {
         float: left;
         width: 25%;
+        position: relative;
+        z-index: 1;
+        margin-left: -1px;
       }
+      .form-group-inline .option-wrapper.active {
+        z-index: 2;
+      }
+      .form-group-inline .option-wrapper:first-child {
+        margin-left: 0;
+      }
+      .form-group-inline .option-wrapper input {
+        border-radius: 0;
+      }
+      .form-group-inline .option-wrapper:first-child input {
+        border-radius: 2px 0 0 2px;
+      }
+      .form-group-inline .option-wrapper:last-child input {
+        border-radius: 0 2px 2px 0;
+      }
+
     </style>
   </head>
   <body>
@@ -159,184 +172,215 @@
     <header class="header">
       <h1>Slogan: generate logo for open-source projects</h1>
     </header>
-    <div id="app" class="clearfix">
-      <div class="form">
-        <div class="form-group">
-          <label>
-            Background Color
-            <input type="text" v-model="form.backgroundColor">
-          </label>
-        </div>
-        <div class="form-group">
-          <label>
-            Font Size
-          </label>
-          <input type="text" v-model="form.fontSize" number>
-        </div>
-        <div class="form-group">
-          <label>
-            Font Color
-          </label>
-          <input type="text" v-model="form.fontColor">
-        </div>
-        <div class="form-group">
-          <label>
-            Font Family
-          </label>
-          <input type="text" v-model="form.fontFamily">
-        </div>
-        <div class="form-group">
-          <label>
-            Font Style
-          </label>
-          <select v-model="form.fontStyle">
-            <option selected>fill</option>
-            <option>stroke</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>
-            Font Shadow
-          </label>
-          <div class="form-group-inline">
-            <div class="option-wrapper">
-              <label>Color</label>
-              <input type="text" v-model="form.fontShadow.color">
-            </div>
-            <div class="option-wrapper">
-              <label>Offset X</label>
-              <input type="text" v-model="form.fontShadow.offsetX">
-            </div>
-            <div class="option-wrapper">
-              <label>Offset Y</label>
-              <input type="text" v-model="form.fontShadow.offsetY">
-            </div>
-            <div class="option-wrapper">
-              <label>Blur</label>
-              <input type="text" v-model="form.fontShadow.blur">
+    <div id="app">
+      <div class="container clearfix">
+        <div class="form">
+          <div class="form-group">
+            <label>
+              Color scheme
+            </label>
+            <select v-model="colorScheme" @change="handleChangeColorScheme">
+              <option value="yellow" :selected="'yellow' === colorScheme">
+                Yellow
+              </option>
+              <option value="green" :selected="'green' === colorScheme">
+                Green
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>
+              Background Color
+              <input type="text" v-model="form.backgroundColor">
+            </label>
+          </div>
+          <div class="form-group">
+            <label>
+              Border Width
+            </label>
+            <input type="number" v-model="form.borderWidth" number>
+          </div>
+          <div class="form-group">
+            <label>
+              Border Color
+            </label>
+            <input type="text" v-model="form.borderColor">
+          </div>
+          <div class="form-group">
+            <label>
+              Canvas Height
+            </label>
+            <input type="number" v-model="form.height" number>
+          </div>
+          <div class="form-group">
+            <label>
+              Canvas Width
+            </label>
+            <input type="number" v-model="form.width" number>
+          </div>
+          <div class="form-group">
+            <label>
+              Box Height
+            </label>
+            <input type="number" v-model="form.boxHeight" number>
+          </div>
+          <div class="form-group">
+            <label>
+              Box Width
+            </label>
+            <input type="number" v-model="form.boxWidth" number>
+          </div>
+          <div class="form-group">
+            <label>
+              Text Size
+            </label>
+            <input type="number" v-model="form.fontSize" number>
+          </div>
+          <div class="form-group">
+            <label>
+              Text Color
+            </label>
+            <input type="text" v-model="form.fontColor">
+          </div>
+          <div class="form-group">
+            <label>
+              Text Font
+            </label>
+            <input type="text" v-model="form.fontFamily">
+          </div>
+          <div class="form-group">
+            <label>
+              Text Style
+            </label>
+            <select v-model="form.fontStyle">
+              <option selected>fill</option>
+              <option>stroke</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>
+              Text Shadow
+            </label>
+            <div class="form-group-inline">
+              <div class="option-wrapper">
+                <label>Color</label>
+                <input type="text" v-option v-model="form.fontShadow.color">
+              </div>
+              <div class="option-wrapper">
+                <label>Offset X</label>
+                <input type="number" number v-option v-model="form.fontShadow.offsetX">
+              </div>
+              <div class="option-wrapper">
+                <label>Offset Y</label>
+                <input type="number" number v-option v-model="form.fontShadow.offsetY">
+              </div>
+              <div class="option-wrapper">
+                <label>Blur</label>
+                <input type="number" number v-option v-model="form.fontShadow.blur">
+              </div>
             </div>
           </div>
+          <div class="form-group">
+            <label>Text Offset</label>
+            <div class="form-group-inline">
+              <div class="option-wrapper">
+                <label>Left</label>
+                <input type="number" v-option v-model="form.offsetLeft" number>
+              </div>
+              <div class="option-wrapper">
+                <label>Top</label>
+                <input type="number" v-option v-model="form.offsetTop" number>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>
+              Text
+            </label>
+            <textarea v-model="form.text" rows="5"></textarea>
+          </div>
+          <button @click="handleReset">Reset data</button>
         </div>
-        <div class="form-group">
-          <label>
-            Border Width
-          </label>
-          <input type="text" v-model="form.borderWidth" number>
-        </div>
-        <div class="form-group">
-          <label>
-            Border Color
-          </label>
-          <input type="text" v-model="form.borderColor">
-        </div>
-        <div class="form-group">
-          <label>
-            Canvas Height
-          </label>
-          <input type="text" v-model="form.height" number>
-        </div>
-        <div class="form-group">
-          <label>
-            Canvas Width
-          </label>
-          <input type="text" v-model="form.width" number>
-        </div>
-        <div class="form-group">
-          <label>
-            Box Height
-          </label>
-          <input type="text" v-model="form.boxHeight" number>
-        </div>
-        <div class="form-group">
-          <label>
-            Box Width
-          </label>
-          <input type="text" v-model="form.boxWidth" number>
-        </div>
-        <div class="form-group">
-          <label>
-            Text Offset Left
-          </label>
-          <input type="text" v-model="form.offsetLeft" number>
-        </div>
-        <div class="form-group">
-          <label>
-            Text Offset Top
-          </label>
-          <input type="text" v-model="form.offsetTop" number>
-        </div>
-        <div class="form-group">
-          <label>
-            Text
-          </label>
-          <textarea v-model="form.text" rows="5"></textarea>
-        </div>
-        <button @click="handleReset">Reset data</button>
-      </div>
-      <div class="result sticky">
-        <div class="draw">
-          <div id="canvas">Loading...</div>
-        </div>
-        <div class="tips">
-          <div class="tip">
-            *Tip: Right click on the image above then click <br><code>Save as</code> to save.
+        <div class="result sticky">
+          <div class="draw">
+            <div id="canvas">Loading...</div>
+          </div>
+          <div class="tips">
+            <div class="tip">
+              <button @click="download" type="button">
+                Download Image
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <script src="https://cdn.css.net/libs/vue/1.0.10/vue.min.js"></script>
-    <script src="https://cdn.css.net/libs/stickyfill/1.1.3/stickyfill.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stickyfill/1.1.4/stickyfill.min.js"></script>
+    <script src="https://unpkg.com/downloadjs@1.4.6"></script>
     <script>
+      Vue.directive('option', function () {
+        const el = this.el;
+        el.addEventListener('focus', function () {
+          el.parentNode.classList.add('active');
+        }, false);
+        el.addEventListener('blur', function () {
+          el.parentNode.classList.remove('active');
+        }, false);
+      });
       var $ = document.querySelector.bind(document);
       var defaultData = {
-          backgroundColor: 'yellow',
-          fontSize: 24,
-          fontColor: 'black',
-          fontFamily: 'Arial',
-          fontStyle: 'fill',
-          fontShadow: {
-            color: '#fff',
-            offsetX: 0,
-            offsetY: 0,
-            blur: 0
+          form: {
+            backgroundColor: 'yellow',
+            fontSize: 50,
+            fontColor: 'black',
+            fontFamily: 'Arial',
+            fontStyle: 'fill',
+            fontShadow: {
+              color: '#fff',
+              offsetX: 0,
+              offsetY: 0,
+              blur: 0
+            },
+            borderColor: 'black',
+            borderWidth: 2,
+            text: [
+              'CSS',
+              'IS',
+              'AWESOME'
+            ].join('\n'),
+            offsetLeft: 20,
+            offsetTop: 60,
+            height: 202,
+            width: 300,
+            boxHeight: 200,
+            boxWidth: 200
           },
-          borderColor: 'black',
-          borderWidth: 2,
-          text: [
-            'CSS',
-            'IS',
-            'AWESOME'
-          ].join('\n'),
-          offsetLeft: 10,
-          offsetTop: 30,
-          height: 102,
-          width: 150,
-          boxHeight: 100,
-          boxWidth: 100
+          colorScheme: 'yellow'
         };
       var vm = new Vue({
         el: '#app',
         data: function () {
-          return {
-            form: JSON.parse(JSON.stringify(defaultData))
-          };
+          return JSON.parse(JSON.stringify(defaultData));
         },
         ready: function () {
           this.fill();
         },
         methods: {
           stickyCanvas: function () {
-             Stickyfill.add(document.getElementsByClassName('result')[0]);
+             Stickyfill.add($('.result'));
           },
           handleChange: function () {
             this.fill();
           },
           handleReset: function () {
-            this.form = JSON.parse(JSON.stringify(defaultData));
+            var data = JSON.parse(JSON.stringify(defaultData));
+            for (var key in data) {
+              this[key] = data[key];
+            }
             this.fill();
           },
           fill: function () {
-
             //Initial or Reinitial canvas element
             var existing = $('#canvas');
             if (existing) {
@@ -380,11 +424,26 @@
             var text = this.form.text.split('\n');
             var drawText = (this.form.fontStyle === 'stroke') ? 'strokeText' : 'fillText';
             text.forEach(function (t, index) {
-              context[drawText](t, this.form.offsetLeft, this.form.offsetTop + index * 30);
+              context[drawText](t, this.form.offsetLeft, this.form.offsetTop + index * this.form.fontSize + 10);
             }.bind(this));
             context.fill();
             // sticky canvas when scrolling
             this.stickyCanvas();
+          },
+          handleChangeColorScheme: function () {
+            if (this.colorScheme === 'green') {
+              this.form.borderColor = '#4fc08d';
+              this.form.fontColor = '#2c3e50';
+              this.form.backgroundColor = 'white';
+            } else if (this.colorScheme === 'yellow') {
+              this.form.borderColor = defaultData.form.borderColor;
+              this.form.fontColor = defaultData.form.fontColor;
+              this.form.backgroundColor = defaultData.form.backgroundColor;
+            }
+          },
+          download: function () {
+            var image = $('#canvas').toDataURL();
+            download(image, 'slogan-download.png', 'image/png');
           }
         }
       });
