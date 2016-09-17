@@ -253,7 +253,11 @@
             <label>
               Text Font
             </label>
-            <input type="text" v-model="form.fontFamily" @input="changeFont | debounce 500">
+            <input type="text" :value="form.fontFamily"
+              @paste="changeFont | debounce 200"
+              @focus="changeFont | debounce 200"
+              @blur="changeFont | debounce 200"
+              @input="changeFont | debounce 500">
           </div>
           <div class="form-group">
             <label>
@@ -382,6 +386,7 @@
           },
           colorScheme: 'yellow'
         };
+      var cacheFonts = [];
       var vm = new Vue({
         el: '#app',
         data: function () {
@@ -473,15 +478,20 @@
             var image = $('#canvas').toDataURL();
             download(image, 'slogan-download.png', 'image/png');
           },
-          changeFont: function () {
-            var font = this.form.fontFamily
+          changeFont: function (e) {
+            var font = e.target.value
               .replace(/\b\w/g, function (m) {
                 return m.toUpperCase();
               });
             this.form.fontFamily = font;
+            if (cacheFonts.indexOf(font) !== -1) {
+              this.fill();
+              return;
+            }
+            cacheFonts.push(font)
             axios.get('https://fonts.css.network/css?family=' + font.replace(' ', '+'))
               .then(function (res) {
-                if (res.statusText === 'OK') {
+                if (res.status === 200) {
                   styleInject(res.data)
                   this.fill()
                 } else {
