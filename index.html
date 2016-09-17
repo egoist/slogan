@@ -254,10 +254,10 @@
               Text Font
             </label>
             <input type="text" :value="form.fontFamily"
-              @paste="changeFont | debounce 200"
-              @focus="changeFont | debounce 200"
-              @blur="changeFont | debounce 200"
-              @input="changeFont | debounce 500">
+              @paste="changeFont"
+              @focus="changeFont"
+              @blur="changeFont"
+              @input="changeFontLazy">
           </div>
           <div class="form-group">
             <label>
@@ -330,6 +330,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stickyfill/1.1.4/stickyfill.min.js"></script>
     <script src="https://unpkg.com/downloadjs@1.4.6"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.14.0/axios.min.js"></script>
+    <script src="https://unpkg.com/lodash@4.15.0/lodash.min.js"></script>
     <script>
       function styleInject (css, returnValue) {
         if (typeof document === 'undefined') {
@@ -477,6 +478,13 @@
           download: function () {
             var image = $('#canvas').toDataURL();
             download(image, 'slogan-download.png', 'image/png');
+          },
+          changeFontLazy(e) {
+            const handler = _.throttle(function (e) {
+              this.changeFont(e);
+            }.bind(this), 500);
+
+            handler(e);
           },
           changeFont: function (e) {
             var font = e.target.value
