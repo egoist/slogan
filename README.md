@@ -9,6 +9,7 @@ Slogan: generate logo for open-source projects ♨️ 👉 https://egoist.github
 - [hack](https://github.com/egoist/hack)
 - [vuepack](https://github.com/egoist/vuepack)
 - [eva.js](https://github.com/egoist/eva.js)
+- [bubleup](https://github.com/egosit/bubleup)
 
 ## License
 
