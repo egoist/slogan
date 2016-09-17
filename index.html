@@ -253,7 +253,7 @@
             <label>
               Text Font
             </label>
-            <input type="text" v-model="form.fontFamily">
+            <input type="text" v-model="form.fontFamily" @input="changeFont | debounce 500">
           </div>
           <div class="form-group">
             <label>
@@ -325,7 +325,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stickyfill/1.1.4/stickyfill.min.js"></script>
     <script src="https://unpkg.com/downloadjs@1.4.6"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.14.0/axios.min.js"></script>
     <script>
+      function styleInject (css, returnValue) {
+        if (typeof document === 'undefined') {
+          return returnValue;
+        }
+        css = css || '';
+        var head = document.head || document.getElementsByTagName('head')[0];
+        var style = document.createElement('style');
+        style.type = 'text/css';
+        if (style.styleSheet){
+          style.styleSheet.cssText = css;
+        } else {
+          style.appendChild(document.createTextNode(css));
+        }
+        head.appendChild(style);
+        return returnValue;
+      };
       Vue.directive('option', function () {
         const el = this.el;
         el.addEventListener('focus', function () {
@@ -455,6 +472,22 @@
           download: function () {
             var image = $('#canvas').toDataURL();
             download(image, 'slogan-download.png', 'image/png');
+          },
+          changeFont: function () {
+            var font = this.form.fontFamily
+              .replace(/\b\w/g, function (m) {
+                return m.toUpperCase();
+              });
+            this.form.fontFamily = font;
+            axios.get('https://fonts.css.network/css?family=' + font.replace(' ', '+'))
+              .then(function (res) {
+                if (res.statusText === 'OK') {
+                  styleInject(res.data)
+                  this.fill()
+                } else {
+                  console.log(font + ' is missing at google fonts!')
+                }
+              }.bind(this))
           }
         }
       });
