@@ -2,7 +2,7 @@
 
 <img src="./logo.png" width="100"/>
 
-Slogan: generate logo for open-source projects ♨️ 👉 https://egoist.github.io/slogan
+Slogan: generate logo for open-source projects ♨️ 👉 https://slogan.egoist.sh/
 
 ## Who's using this?
 
